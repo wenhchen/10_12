@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+<mapper namespace="com.capgemini.web.mapper.StudentMapper">
+  <resultMap id="studentRM" type="com.capgemini.web.domain.Student">
+        <id column="id" jdbcType="INTEGER" property="id"></id>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="age" jdbcType="INTEGER" property="age"></result>
+        <association column="gradeid" property="grade" javaType="com.capgemini.web.domain.Grade" select="com.capgemini.web.mapper.GradeMapper.findById"></association>
+
+        <association column="addressId" property="address" javaType="com.capgemini.web.domain.Address" select="com.capgemini.web.mapper.AddressMapper.findById"></association>
+  </resultMap>   
+  
+    <insert id="add" parameterType="com.capgemini.web.domain.Student">
+  		INSERT INTO `rdctraining`.`t_student` (
+		  `id`,
+  		  `name`,
+		  `age`
+		) 
+		VALUES
+		  (
+		    #{id},
+  		    #{name},
+		    #{age}
+		  ) ;
+  	</insert>
+  	
+  	<delete id="deleteStudent" parameterType="int">
+  	DELETE 
+		FROM  t_student
+	WHERE `id` = #{id} ;
+  	</delete>
+  	
+  	<update id="update" parameterType="com.capgemini.web.domain.Student">
+  	UPDATE t_student
+	SET `id` = #{id},
+		`name` = #{name},
+	  	`age` = #{age} 
+	WHERE `id` = #{id} ;
+  	
+  	</update>
+  
+     <select id="findById" parameterType="int" resultMap="studentRM">
+	   select  *  from t_student where id = #{id}
+     </select>
+     
+     <select id="FindAllStudent"  resultMap="studentRM">
+	   select  *  from t_student  
+     </select>
+     
+     
+     <select id="findByGradeId" parameterType="int" resultMap="studentRM">
+	   select   * from t_student where gradeId = #{gradeId}
+     </select>
+
+</mapper>

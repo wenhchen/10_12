@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+<mapper namespace="com.capgemini.web.mapper.GradeMapper">
+ <resultMap id="gradeRM" type="com.capgemini.web.domain.Grade">
+        <id column="id" jdbcType="INTEGER" property="id"></id>
+        <result column="gradeName" jdbcType="VARCHAR" property="gradeName"></result>
+		<collection property="students" column="id" select="com.capgemini.web.mapper.StudentMapper.findByGradeId"></collection>
+  </resultMap>   
+  
+  	<insert id="add" parameterType="com.capgemini.web.domain.Grade">
+  		INSERT INTO t_grade (`id`, `gradeName`) VALUES(#{id}, #{gradeName}) ;
+  	</insert>
+  	
+  	<update id="update" parameterType="com.capgemini.web.domain.Grade">
+  		UPDATE `rdctraining`.`t_grade` 
+		SET `gradeName` = #{gradeName}
+		WHERE `id` = #{id} ;
+  	</update>
+  	
+  	<delete id="delete" parameterType="int">
+  		DELETE 
+		FROM `rdctraining`.`t_grade` 
+		WHERE `id` = #{id} ;
+  	
+  	</delete>
+   
+    <select id="findById" parameterType="int" resultMap="gradeRM">
+	   select * from t_grade where id = #{id}
+     </select>
+	
+</mapper>
